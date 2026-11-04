@@ -32,7 +32,7 @@
     "href": "index.html#projects",
     "title": "The AI-Native Mind",
     "section": "Projects",
-    "text": "Projects\n\n\nAPM. Microsoft’s open-source Agent Package Manager: declares the skills, prompts and plugins your coding agents use as dependencies, pins them, and governs them with one org-wide policy.\nAPMX. An independent, experimental open-source runner for agentic software factories: runs Agent Contracts on your coding agent, writes the receipt and provides the gate at merge.\nAgent Contracts & Receipts. Format draft 0.1, open for comment: read the spec, join the discussions."
+    "text": "Projects\n\n\nAPM. Microsoft’s open-source Agent Package Manager: declares the skills, prompts and plugins your coding agents use as dependencies, pins them, and governs them with one org-wide policy.\nAPMX. An independent, experimental open-source runner for agentic software factories: runs Agent Contracts on your coding agent, writes the receipt and provides the gate at merge.\nGenesis. An architectural layer for designing multi-agent, multi-skill systems with named patterns and contracts, before you write them. It applies the handbook’s architecture patterns to skill design; Appendix B walks through an example.\nAgent Contracts & Receipts. Format draft 0.1, open for comment: read the spec, join the discussions."
   },
   {
     "objectID": "blog/agent-contracts-and-receipts/index.html",
