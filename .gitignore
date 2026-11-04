@@ -1,3 +1,5 @@
 /.quarto/
 _scratch/
 .DS_Store
+
+**/*.quarto_ipynb
