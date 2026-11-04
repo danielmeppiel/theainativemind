@@ -1,0 +1,16 @@
+---
+title: "Blog"
+description: "Essays by Daniel Meppiel on the agentic software development lifecycle."
+listing:
+  contents: "*/index.qmd"
+  sort: "date desc"
+  type: default
+  fields: [date, title, description, reading-time]
+  date-format: "MMMM D, YYYY"
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  feed:
+    title: "The AI-Native Mind"
+    items: 20
+---

@@ -1,0 +1,133 @@
+---
+title: "Daniel Meppiel"
+pagetitle: "The Agentic SDLC Handbook · Daniel Meppiel"
+description: "Practical frameworks for building software in the age of AI agents, from Daniel Meppiel, author of The Agentic SDLC Handbook and creator of APM. Get the free handbook."
+page-layout: custom
+body-classes: home
+template-partials:
+  - assets/partials/title-block.html
+listing:
+  id: post-list
+  contents: "blog/*/index.qmd"
+  sort: "date desc"
+  type: default
+  max-items: 3
+  fields: [date, title, description]
+  date-format: "MMMM D, YYYY"
+  categories: false
+  sort-ui: false
+  filter-ui: false
+  feed: false
+---
+
+::: {.hero}
+::: {.wrap .hero-grid}
+::: {.hero-copy}
+```{=html}
+<h1 class="display">AI tools made developers faster. Nobody prepared the engineering organization for what&rsquo;s next.</h1>
+```
+
+[Practical frameworks for building software in the age of AI agents, from the author of The Agentic SDLC Handbook and creator of APM.]{.hero-sub}
+:::
+
+::: {.hero-aside}
+::: {.form-card #subscribe}
+```{=html}
+<h2 class="card-title">Get the Agentic SDLC Handbook</h2>
+```
+
+An actionable framework for leaders and practitioners changing how software gets delivered in the agentic era.
+
+**Free PDF and EPUB.**
+
+{{< include _kit-form.html >}}
+
+[You will receive the handbook right away, followed by a short welcome series and The AI-Native Mind newsletter (about twice a month). Unsubscribe anytime with one click.]{.fine}
+:::
+
+[[Or read it online for free →](https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind)]{.read-online}
+:::
+:::
+:::
+
+::: {.essay-strip}
+::: {.wrap}
+[Essay · from the aiDevCon NYC talk, November 2026]{.strip-label} [Agent Contracts and Receipts: toward verifiable agentic software factories]{.strip-title} [[Read the essay →](/blog/agent-contracts-and-receipts/) [·]{.sep} [Format draft 0.1 →](https://github.com/danielmeppiel/agent-contracts/tree/main/spec)]{.strip-links}
+:::
+:::
+
+::: {.about #about}
+::: {.wrap .about-grid}
+::: {.about-person}
+```{=html}
+<picture>
+  <source srcset="assets/img/daniel-meppiel.webp" type="image/webp">
+  <img src="assets/img/daniel-meppiel.jpg" width="466" height="466" alt="Portrait of Daniel Meppiel" class="about-photo" loading="lazy">
+</picture>
+```
+
+[Daniel Meppiel]{.about-name}
+
+::: {.about-creds}
+Author, The Agentic SDLC Handbook<br>
+Creator of APM and APMX<br>
+Previously GitHub · CERN · founder of WeGaw
+:::
+
+[Connect on LinkedIn](https://www.linkedin.com/in/danielmeppiel/){.about-link}
+:::
+
+::: {.about-text}
+## About The AI-Native Mind
+
+I believe we are in the early chapters of a fundamental shift in how software gets built: not only faster code generation, but a rethinking of how engineering organizations operate when every developer works alongside AI agents.
+
+I have spent 14+ years on this trajectory: distributed systems at CERN, developer tools at GitHub, and founding an AI startup as CTO ([WeGaw](https://wegaw.com/), backed by the European Space Agency). Today I work on enterprise AI-native adoption.
+
+I created [APM](https://github.com/microsoft/apm), Microsoft's open-source Agent Package Manager, now supported by [GitHub's Dependabot](https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager/) and by [Renovate](https://docs.renovatebot.com/modules/manager/apm/). I designed the PROSE specification for writing agent instructions that hold up. I wrote [The Agentic SDLC Handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind), everything I have learned about making AI-native development work at scale. And I build [APMX](https://github.com/danielmeppiel/apmx), an independent, experimental runner for verifiable agentic software factories.
+:::
+:::
+:::
+
+::: {.inside #handbook}
+::: {.wrap}
+## What you will find in the handbook
+
+::: {.inside-list}
+1. **Why AI-native development is more than adopting a coding agent.** Copilot, Claude or Cursor change how one developer works. What engineering organizations need to change is bigger.
+2. **The governance gap.** How productivity gains disappear when AI-generated code reaches review, compliance and architecture standards.
+3. **Agent onboarding.** Patterns that treat coding agents like new hires, with context, standards and guardrails built in.
+4. **The PROSE specification.** A framework for writing agent instructions that are precise, composable and version-controlled.
+5. **A two-command implementation pattern.** `apm install`, then `apm compile`.
+6. **The full method.** From one developer's setup to agent governance across an enterprise.
+:::
+
+::: {.cta-row}
+[Get the free handbook](#subscribe){.btn-ink}
+[Read it online →](https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind){.cta-quiet}
+:::
+:::
+:::
+
+::: {.more}
+::: {.wrap .more-grid}
+::: {.more-col #writing}
+## Writing
+
+::: {#post-list}
+:::
+
+[All essays](/blog/) · [RSS](/blog/index.xml)
+:::
+
+::: {.more-col #projects}
+## Projects
+
+::: {.project-list}
+- [APM](https://github.com/microsoft/apm){.project-name}. Microsoft's open-source Agent Package Manager: declares the skills, prompts and plugins your coding agents use as dependencies, pins them, and governs them with one org-wide policy.
+- [APMX](https://github.com/danielmeppiel/apmx){.project-name}. An independent, experimental open-source runner for agentic software factories: runs Agent Contracts on your coding agent, writes the receipt and provides the gate at merge.
+- [Agent Contracts & Receipts](https://github.com/danielmeppiel/agent-contracts){.project-name}. Format draft 0.1, open for comment: read the [spec](https://github.com/danielmeppiel/agent-contracts/tree/main/spec), join the [discussions](https://github.com/danielmeppiel/agent-contracts/discussions).
+:::
+:::
+:::
+:::

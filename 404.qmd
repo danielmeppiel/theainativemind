@@ -1,0 +1,9 @@
+---
+title: "Page not found"
+---
+
+::: {.not-found}
+There is nothing at this address. It may have moved, or the link may be mistyped.
+
+[Go to the home page](/)
+:::

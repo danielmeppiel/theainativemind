@@ -1,0 +1,3 @@
+filters:
+  - ../_filters/plain-images.lua
+  - ../_filters/subscribe.lua

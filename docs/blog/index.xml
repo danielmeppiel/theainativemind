@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>The AI-Native Mind</title>
+<link>https://theainativemind.com/blog/</link>
+<atom:link href="https://theainativemind.com/blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>Essays by Daniel Meppiel on the agentic software development lifecycle.</description>
+<image>
+<url>https://theainativemind.com/blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png</url>
+<title>The AI-Native Mind</title>
+<link>https://theainativemind.com/blog/</link>
+</image>
+<generator>quarto-1.9.36</generator>
+<lastBuildDate>Wed, 04 Nov 2026 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Agent Contracts and Receipts: toward verifiable agentic software factories</title>
+  <dc:creator>Daniel Meppiel</dc:creator>
+  <link>https://theainativemind.com/blog/agent-contracts-and-receipts/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Someone at a bank writes one sentence: <em>hold outgoing wires of $10,000 or more to a new payee for a second approval.</em> Minutes later, an agentic software factory has done the work, and <a href="https://github.com/danielmeppiel/contoso-payments/pull/1">a pull request</a> is waiting against the bank’s core payments system. Three files: the wire logic, a new test module, the documentation. A hundred and seventy-five lines added, nine removed. One required check, and it is green.</p>
+<p>The bank is fictional. The code, the CI and that pull request are real.</p>
+<p>Would you merge it without reading it?</p>
+<p>Today the honest answer is no. The code may look fine, but nothing about the pull request tells you how it was made: which factory produced it, whether that factory is the one you approved, which checks it was held to, and whether anyone tampered with any of it on the way. So you read it line by line, the way you would read a stranger’s code.</p>
+<p>This essay is about what it would take to say yes: a system around the model that you can version, check and admit, the way we already admit software we did not write.</p>
+<section id="generation-scaled.-delivery-didnt." class="level2">
+<h2 data-anchor-id="generation-scaled.-delivery-didnt.">Generation scaled. Delivery didn’t.</h2>
+<p>Give a factory to every team in a company of ten thousand engineers. Generation scales immediately. Delivery does not. Every pull request now waits twice: once for CI to rerun everything, and once for a human to read it. There is still one of you.</p>
+<p>A common answer today is a risk classifier: auto-merge the low-risk changes, route the rest to a human, let CI keep rerunning everything. I think that is necessary. It is not enough. A change to how wires are approved is never low-risk, so every change that matters still lands in the human queue. And a classifier judges the change, not how it was made. It can tell you the diff touches payments. It cannot tell you whether the factory that wrote it was the one you approved, held to the checks you approved.</p>
+<p>When I talk to enterprises about this, the same four needs come up, each with an owner who will not sign off without an answer. <strong>Verification</strong>, for the product owner: does it do what we intended? <strong>Enforcement</strong>, for the platform team: did every agent work the approved way, with our mandated skills and dependencies, at every step, not just get caught at the end by CI while it loops again? <strong>Traceability</strong>, for audit: which factory built it, at which version? <strong>Security</strong>, for the CISO: was that factory, or anything it depends on, tampered with?</p>
+<p>A reviewer can form an opinion about the first. The other three are questions about the producing system, and the diff does not contain it.</p>
+</section>
+<section id="trust-has-to-come-from-the-system" class="level2">
+<h2 data-anchor-id="trust-has-to-come-from-the-system">Trust has to come from the system</h2>
+<p>My thesis:</p>
+<blockquote class="blockquote">
+<p><strong>Trust in agent-built software can’t come from the model, or from reading its output. It has to come from the system that produces it — engineered and attested like any software supply chain, on open standards.</strong></p>
+</blockquote>
+<p>It builds on three ideas from <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/"><em>The Agentic SDLC Handbook</em></a>:</p>
+<ol type="1">
+<li><strong>A smarter model is not the answer.</strong> In <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html">the first chapter</a> I wrote that the wall teams hit when they scale AI-assisted development “is not about intelligence. It’s about information.” What fixes it is engineering discipline around the model, not a better model or another tool.</li>
+<li><strong>The model proposes; something deterministic decides.</strong> <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch16-deterministic-probabilistic-boundary.html">The Deterministic/Probabilistic Boundary</a> splits every agentic system in two: a probabilistic part that proposes, and a deterministic part (tests, checks, policy) that decides what actually happens. Where you draw that line matters more than which model you pick.</li>
+<li><strong>Agent primitives are packages.</strong> <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch21-primitives-as-code.html">Primitives as Code</a> treated skills and agent configuration as packages, with manifests, lockfiles and versions. It left one problem open: when your agents run on skills published by other teams or companies, how do you know what you’re running, and who vouches for it?</li>
+</ol>
+<p>Agent Contracts take the next step: packages become modules of a program. A contract imports skills by name and the lockfile pins their versions, the way a linker binds libraries. Contracts connect through the files they need and produce, so the order is derived from the data, not scripted. Each contract states its preconditions and postconditions (its checks), in the sense of Design by Contract. So an agentic software factory is a program, and like any program built from other people’s packages, it has a supply chain: an <strong>agent supply chain</strong>. Intent, contracts, skills and a coding agent go in; code comes out.</p>
+<p>Software supply chains already let us trust code nobody in the room wrote: we give what produced it an identity, record evidence of how it was built, and have a machine check that evidence against a policy before admitting it. Agent supply chains need the same, with two changes I will come to.</p>
+<p>The handbook’s line between proposing and deciding then becomes three roles:</p>
+<p><strong>Generation proposes. Verification evaluates. Policy authorizes.</strong></p>
+<p>A passing test is not permission to merge. A merge is not permission to deploy. The agent only generates. Checks it cannot edit do the evaluating, and rules your security team owns decide what merges.</p>
+<p><img src="https://theainativemind.com/blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png" class="img-fluid" alt="Diagram titled “Intent in. Evidence out.” An arrow labeled “intent” enters a dashed box labeled “Factory” holding three linked documents (1). An arrow leads to a paper receipt with a seal (2), then to a door with a guard labeled “Gate, apmx audit” (4), then to “main”. Above the gate, a yellow document labeled “Rules” (3) feeds into it. A numbered legend reads: 1, a versioned factory: contracts, checks, skills. 2, a signed receipt: what built it, what passed. 3, your rules: owned by security. 4, one gate at merge: receipt against your rules."></p>
+<p><em>Figure 1. The whole system on one page: a versioned factory leaves a signed receipt, and one gate at merge reads it against rules your security team owns. The rest of this essay zooms into each part.</em></p>
+</section>
+<section id="a-factory-is-a-program" class="level2">
+<h2 data-anchor-id="a-factory-is-a-program">A factory is a program</h2>
+<p>You did not set out to build a factory. You explained a repository to an agent, then captured the method as a skill, packaged skills so other teams could reuse them, automated the loop of build, check and correct, and connected those loops across planning, implementation and review. Somewhere along the way you had built a producing system. That is an agentic software factory.</p>
+<p>A factory is a program. And the first thing any program needs is a version, because identity is what everything else attaches to. You cannot pin, inventory, trace, sign or admit something that has no identity.</p>
+<p>Today most factories cannot be versioned, for one of two reasons. Most are <strong>loose parts</strong>: agents wired by hand to skills, prompts, plugins, scripts and MCP servers. Every piece is yours, but there is no single thing to version or sign. The rest are <strong>locked in</strong>: the factory lives inside one vendor’s harness, so it is one thing, but it only runs there. What is missing is a portable unit of agent work: one file you can version, check and sign, and run on your choice of coding agent.</p>
+<p>I call that unit an <strong>Agent Contract</strong>. It is written down the way you would write a job contract for a new hire:</p>
+<ul>
+<li>the <strong>assignment</strong>: your intent, the one part that changes every run;</li>
+<li>the <strong>role</strong>: how the work is done, the same every run;</li>
+<li>the <strong>dependencies</strong>: the skills and packages it may use, pinned;</li>
+<li>the <strong>budget</strong>: how many tries and how much time;</li>
+<li>the <strong>checks</strong>: how the work is judged, fixed before the run;</li>
+<li>the <strong>deliverables</strong>: what it hands back.</li>
+</ul>
+<p>It is one file, reviewed and versioned like code: composable, portable across coding agents, and identifiable by its digest. Here is the front matter of the build contract in the factory that produced the bank’s pull request (<a href="https://github.com/danielmeppiel/apmx-demo-factory/tree/v2.0.0"><code>danielmeppiel/apmx-demo-factory</code></a>, tag <code>v2.0.0</code>), unedited:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">needs</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> request.md</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> specification.md</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">produces</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> changes.diff</span></span>
+<span id="cb1-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> implementation.md</span></span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">imports</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python-testing-patterns</span></span>
+<span id="cb1-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">budget</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max_attempts</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb1-12"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max_seconds</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span></span>
+<span id="cb1-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">verify</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-14"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">acceptance-scenarios</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python3 -I -B checks/acceptance.py changes.diff</span></span>
+<span id="cb1-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">regression-suite</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python3 -I -B checks/regression.py changes.diff</span></span>
+<span id="cb1-16"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">change-scope</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python3 -I -B checks/scope.py changes.diff</span></span>
+<span id="cb1-17"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">money-in-cents</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python3 -I -B checks/money.py changes.diff</span></span>
+<span id="cb1-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">implementation-report-format</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> python3 -I -B checks/documents.py implementation implementation.md</span></span>
+<span id="cb1-19"><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">---</span></span></code></pre></div></div>
+<p>The assignment arrives as <code>request.md</code>. The role is the Markdown body below this block. The dependency is one pinned skill. The budget is three attempts sharing ten minutes. The checks are five ordinary commands your platform team can read. The deliverables are a diff and a report. A security reviewer can read all of it without running anything.</p>
+<p>The name has history. Design by Contract, Bertrand Meyer’s discipline from Eiffel, gave software preconditions and postconditions. The Contract Net Protocol (Reid Smith, 1980) used contracts to allocate tasks among agents. Ye and Tan’s <a href="https://arxiv.org/abs/2601.08815">Agent Contracts</a> (2026) formalize resource budgets and success criteria for autonomous agents. What this proposal adds is the rest of the supply chain: contracts composed into a versioned factory, a receipt of standard evidence for every run, signed in CI rather than by the agent, and one gate at merge that reads it against your rules.</p>
+<p>There are two layers of checks, the same split as a CI pipeline and the test cases in a repository. The contract holds the generic, reusable checks for this kind of work: the platform’s standards. The task-specific acceptance scenarios travel with the intent, in the repository, written before the run. Here, <code>acceptance-scenarios</code> runs the repository’s own <code>acceptance/*.feature</code> files, read from the original bytes, and a patch that touches <code>acceptance/</code> is rejected before anything runs.</p>
+<p>A factory is then a graph of contracts. Each contract’s checked output becomes the next one’s input: planning hands a plan to specification, specification hands a spec to build, and so on. The whole graph is one package with one version and one <strong>factory fingerprint</strong>: a definition digest that pins every contract, every check and every skill. The bank’s factory has five contracts and eleven checks, and its fingerprint begins <code>sha256:f6c2d240</code>.</p>
+<p>The factory does not name a coding agent. A harness runs each contract, and the harness is your choice of coding agent; today that means GitHub Copilot CLI or OpenCode. The factory is the program. The harness is the machine it runs on.</p>
+</section>
+<section id="the-fabric-of-trust-rewoven-for-factories" class="level2">
+<h2 data-anchor-id="the-fabric-of-trust-rewoven-for-factories">The fabric of trust, rewoven for factories</h2>
+<p>Over roughly twenty years, software built what I call a fabric of trust out of open standards. It has six threads, and versioning is the first: identity is what every other thread attaches to. Then inventory, provenance, evidence, signature and admission, where a machine checks all of it before anything runs. Every thread has a direct counterpart for factories.</p>
+<p><img src="https://theainativemind.com/blog/agent-contracts-and-receipts/img/same-fabric-of-trust.png" class="img-fluid" alt="Diagram titled “Same fabric of trust, for factories.” Six labeled threads run left to right, each with a software column and an agentic-factories column. Identity: versions, then factory version. Inventory: SBOM, then ABOM. Provenance: SLSA, then which factory, agent, model. Evidence: in-toto, then checks, rerun without the agent. Signature: Sigstore, then signed in CI. Gate: admission control, then apmx audit."></p>
+<p><em>Figure 2. The same six threads, for factories. Two of them change: evidence is re-checked rather than rebuilt, and the signature comes from CI, not from the agent.</em></p>
+<details>
+<summary>
+The six threads as a table
+</summary>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Thread</th>
+<th>For software</th>
+<th>For agentic software factories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Identity</td>
+<td>versions, commits, digests</td>
+<td>factory version and fingerprint</td>
+</tr>
+<tr class="even">
+<td>Inventory</td>
+<td>SBOM (CycloneDX)</td>
+<td>ABOM: the skills and packages the agent was given, pinned (CycloneDX)</td>
+</tr>
+<tr class="odd">
+<td>Provenance</td>
+<td>SLSA provenance</td>
+<td>which factory, contract steps, agent, model and base produced it</td>
+</tr>
+<tr class="even">
+<td>Evidence</td>
+<td>test results (in-toto)</td>
+<td>each contract check, rerun with no agent</td>
+</tr>
+<tr class="odd">
+<td>Signature</td>
+<td>Sigstore</td>
+<td>signed in CI by a trusted signer the agent can’t reach</td>
+</tr>
+<tr class="even">
+<td>Admission</td>
+<td>admission control</td>
+<td>one gate at merge that reads the receipt against your rules</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>The threads come together in one artifact, which I call the <strong>receipt</strong>. Every completed run leaves one. It is a single in-toto bundle, and every statement in it is about the exact files delivered:</p>
+<ul>
+<li><strong>SLSA provenance</strong>: which factory and version, which contract steps, which agent and model, and which base commit it started from.</li>
+<li><strong>in-toto test results</strong>: one statement per declared check, each recording that the check passed on these bytes.</li>
+<li><strong>An ABOM</strong>, an agent bill of materials: an ordinary CycloneDX document listing the skills and packages the factory was given, each pinned by content hash. This is the enforcement evidence: the mandated way of working was supplied. Whether it was followed is the checks’ job.</li>
+</ul>
+<p>In CI, a trusted signer the agent cannot reach verifies the receipt and signs it with <strong>Sigstore</strong>, storing the attestations under each delivered file’s digest. Receipts produced on a laptop are unsigned; they bind content, not identity.</p>
+<p>Each part is an existing open standard your supply-chain tooling already knows. What is new is the profile: how a factory’s build is described, and what an agent bill of materials should contain.</p>
+<p><img src="https://theainativemind.com/blog/agent-contracts-and-receipts/img/one-receipt-four-standards.png" class="img-fluid" alt="Diagram titled “One receipt. Four open standards.” A paper receipt reads: FACTORY v2.0.0 · f6c2d240; MODEL claude-sonnet-5.5; FILES 3 · sha256-bound; acceptance-scenarios PASS; regression-suite PASS; TOTAL 11/11 PASSED, highlighted; SKILL python-testing-patterns, PINNED agents@46891e7e; SIGNED trusted signer, with a seal. Brackets map its sections to four standards, each tagged with an enterprise need: SLSA provenance for traceability, in-toto test results for verification, CycloneDX ABOM for enforcement, Sigstore signature for security."></p>
+<p><em>Figure 3. One receipt, four open standards, each answering one of the four needs. Condensed from the receipt behind the bank’s pull request, which shows two of its eleven check results.</em></p>
+<p>A receipt on its own is a claim. Two more pieces turn it into a decision.</p>
+<p>The <strong>rules</strong> are a policy file your security team owns: <code>apm-policy.yml</code>, the same file that can already govern which skills a project may install. It lists the approved factory versions by fingerprint, the trusted signer, the allowed skill sources and any revoked skills. It can be set once for the organization and inherited by every repository, and inheritance is tighten-only: a repository can narrow the rules, never loosen them. An excerpt of the factory section:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factories</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb2-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">allow</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"acme/checkout-factory@sha256:0311c27f3d7b..."</span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require_signed</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">signers</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">workflow</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> danielmeppiel/apmx/.github/workflows/run.yml</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">workflow_sha</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> fae2067a0dc6ff07beda714015ff9e648f41ce63</span></span>
+<span id="cb2-8"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">repo</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> acme/factories</span></span>
+<span id="cb2-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">revoked</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb2-10"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">purl</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pkg:github/acme/style@3f2a..."</span></span>
+<span id="cb2-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bodySha256</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dead..."</span></span></code></pre></div></div>
+<p>The <strong>gate</strong> is one required check at merge that reads the receipt against those rules; in the implementation linked at the end, it is <code>apmx audit</code>. It reads the policy from the base branch, never from the pull request, so a delivery cannot loosen its own rules. It looks up every changed file by its SHA-256 in the trusted signer’s attestation store, and a pull request that changes anything the signed delivery does not cover fails. Pull requests written by people fail it too, as “not a factory delivery”, and take your normal review path. The gate then reports row by row, and I group the rows under the four needs: checks for verification; dependencies and revocation for enforcement; factory and outputs for traceability; integrity and identity for security. On the bank’s pull request it took 22 seconds.</p>
+<p>Green means something specific. It means you know which factory built the change, that it is a version you approved, that nothing was altered after signing, and which of your checks passed. It does not mean the code is right. Green is exactly as good as the checks you approved.</p>
+<p>A factory whose every delivery carries a receipt a gate can check is what I mean by a <strong>verifiable factory</strong>.</p>
+</section>
+<section id="where-the-supply-chain-analogy-breaks" class="level2">
+<h2 data-anchor-id="where-the-supply-chain-analogy-breaks">Where the supply-chain analogy breaks</h2>
+<p>The analogy breaks in two places, and that is where the new work is.</p>
+<p><strong>You can’t rebuild an agent’s output, so you re-check it.</strong> Reproducible builds let a second party rebuild an artifact and compare bytes. Agents do not work that way: run the same contract twice and you get two different diffs. So instead of rebuilding, we keep the bytes and re-check them. The checks are fixed in the contract before the run, inside the fingerprint, so the agent cannot quietly change what it will be judged by. After the agent finishes, a separate job with no agent and no model token reruns those checks on the delivered files, and the receipt records those results, not the agent’s account of them.</p>
+<p><strong>The builder is the least trusted actor, so the verifier signs.</strong> In SLSA, the build service signs its own provenance, and we trust it because we hardened it. Here the builder is a model that can be wrong, can be prompt-injected, and can find creative ways to turn a test green. So the signature does not come from the builder. It comes from a pinned CI workflow, in a job the agent cannot reach, which verifies the receipt and signs a SLSA verification summary over the delivered files. The trust anchor moves from the producer to the verifier. This is the handbook’s boundary between proposing and deciding, made concrete: the model proposes, and something it cannot touch decides.</p>
+<p>Three smaller breaks limit what a receipt can claim. The source is intent, not code: provenance pins exactly what was asked, not whether it was the right thing to ask. The model is recorded, not attested: the receipt records which model the harness reported, and nothing independently verifies it. And loaded is not followed: an SBOM lists components inside the binary, while an ABOM lists skills given to the agent. Whether the agent followed them is what the checks are for.</p>
+</section>
+<section id="questions-an-enterprise-can-now-answer" class="level2">
+<h2 data-anchor-id="questions-an-enterprise-can-now-answer">Questions an enterprise can now answer</h2>
+<p>On a Monday morning, questions land from production, security, audit and the platform team. Here are five examples, of many, with how each is answered and where the answer stops.</p>
+<p><strong>Production broke. Which factory, which step?</strong> Start from the file running in production and take its SHA-256 digest. CI stored the signed attestations under that digest, so the digest finds them, as long as the file is unchanged since delivery. The provenance names the factory and version, the contract steps that produced the delivery, and the skills and checks involved. That tells you what built it, not where the bug is. Whether the fix belongs in a skill, a contract or a missing check is still your call.</p>
+<p><strong>A skill was compromised. Who is exposed?</strong> Every receipt carries an ABOM, so you can find every delivery whose ABOM names that skill. Security adds it to the revoked list in the rules, by package identifier and content digest, and the gate blocks every new delivery built with it. Then you patch the skill and ship a new factory version. Two edges: revocation blocks new deliveries; it does not recall code that already merged. And searching every receipt across an organization is, today, a script you write over the attestation store, not a product.</p>
+<p><strong>The checks passed. Did the agent change them?</strong> Not quietly. The checks live in the contract, inside the factory’s fingerprint; changing one produces a new fingerprint your rules have not approved. They run in a separate job, without the agent. And the gate requires a passed result for each declared check. In the bank’s factory, a scope check also rejects any patch that edits existing tests or policy, or touches anything outside <code>src/</code> and <code>tests/</code>. The agent was judged by the checks you approved, which are only as good as you wrote them.</p>
+<p><strong>We added payment checks. Are they mandatory?</strong> New checks mean a new factory version: 2.0 becomes 2.1, with a new fingerprint. Security allows only 2.1 in the rules. Anything built by 2.0 is turned away at the gate and goes to a human. The new checks are mandatory from the next merge, with no change to any repository’s gate.</p>
+<p><strong>Which skills and factories may our agents use?</strong> Security writes one set of rules for the organization. Skills may come only from allowed sources, checked when they are installed. Factories are allowed only in approved versions, by fingerprint. Every repository inherits the rules and can only tighten them, and the gate checks both again at every merge. Set once for the organization; enforced at install and at every gated merge.</p>
+<p>Others follow from the same mechanisms. Which deliveries did factory v2.0 produce? Each signed receipt names its fingerprint, so the same search over the attestation store finds them. Can an auditor reconstruct, months later, what ran and what was checked for a given change? As long as you retain the attestations, the change’s own file digests lead back to the factory, the skills it was given and every check result.</p>
+<p>Now go back to the queue from the start of this essay. A pull request from an approved factory, with its signed receipt, meets one gate that reads the receipt against your rules. The factory’s own checks are not rerun, and nobody has to read the diff to establish where it came from. Whether the change is right still rests on the checks you approved, so that is where your reviewers’ time should go. Your integration tests can, and should, still run. Anything that does not hold goes to a human, with the failing row as the reason.</p>
+</section>
+<section id="what-this-does-not-do" class="level2">
+<h2 data-anchor-id="what-this-does-not-do">What this does not do</h2>
+<ul>
+<li>Green is not a statement that the code is right. If your checks are weak, green is weak.</li>
+<li>No SLSA level is claimed. The receipt uses SLSA formats; it does not assert a SLSA build level.</li>
+<li>Models are recorded, not enforced. The rules do not restrict models today.</li>
+<li>Revocation blocks new deliveries. It does not recall merged code.</li>
+<li>Skills loaded are not skills followed. The ABOM says what the agent was given, not what it did with it.</li>
+<li>Laptop receipts are unsigned. Only the CI signer authenticates.</li>
+<li>The trust roots are your CI, GitHub’s OIDC issuer and attestation store, Sigstore, and the pinned signing workflow. Whoever controls your main branch controls the gate.</li>
+<li>The format itself is draft 0.1. It is an invitation, not a standard.</li>
+</ul>
+</section>
+<section id="what-the-industry-needs" class="level2">
+<h2 data-anchor-id="what-the-industry-needs">What the industry needs</h2>
+<p>Software wove its fabric of trust in the open. Agentic factories need theirs now, and I do not think any single vendor should own it. Three things would get us most of the way:</p>
+<ol type="1">
+<li><strong>Define factories as code, in an open format.</strong> Agent Contracts: portable across teams and coding agents.</li>
+<li><strong>Version them. Emit standard evidence.</strong> SLSA, in-toto and a CycloneDX ABOM, so any tool can verify it.</li>
+<li><strong>Gate on evidence.</strong></li>
+</ol>
+<p>The first is the one that does not exist yet. The standards for the receipt are mature; what is missing is a shared way to write down the unit of agent work, and a shared profile for what an agent bill of materials should contain. I have written a first draft of both: <a href="https://github.com/danielmeppiel/agent-contracts/tree/main/spec">Agent Contracts &amp; Receipts — format draft 0.1</a>. It is deliberately small, aligned with SLSA, in-toto and CycloneDX rather than competing with them, and I would like to work with those communities on the parts that belong upstream.</p>
+<p>Help shape an open format for agent contracts and their receipts. Draft 0.1 is open: read it, break it, tell us what’s missing. The place to do that is the <a href="https://github.com/danielmeppiel/agent-contracts/discussions">discussions</a>.</p>
+<p>You can check my claims against code rather than prose. I built two open-source projects that implement what this essay describes. <a href="https://github.com/microsoft/apm">APM</a>, Microsoft’s open-source Agent Package Manager, installs the factory: it pins each skill and package to a commit and content hash, and governs them with one org-wide policy. <a href="https://github.com/danielmeppiel/apmx">APMX</a>, one open-source implementation of the format, independent and experimental, runs the factory on your coding agent, writes the receipt and provides the gate. <code>apmx --from 'danielmeppiel/apmx-demo-factory#v2.0.0' --plan</code> shows the bank’s factory, its contracts and checks, without calling a model. Neither project is required by the format; a better runner or gate from someone else would mean the format is working. If you want to try it in your organization, start small: one repository, one factory, the gate running as a check that is not yet required, then make it required.</p>
+<p>Go back to the pull request at the bank. Three files, one sentence of intent, one green check. With a receipt behind it, “would you merge it without reading it?” turns into three questions about your own system: did you approve this factory, do you trust its signer, and are the checks you wrote good enough to stand behind? We already answer those for every dependency we ship.</p>
+<p>A factory is a program, so treat it like one. Version your factory, not just your code.</p>
+
+
+<section class="subscribe" id="subscribe" aria-labelledby="subscribe-title">
+<h2 id="subscribe-title" class="unnumbered unlisted">Get the handbook and new essays by email</h2>
+<p>The Agentic SDLC Handbook arrives right away, then new essays as they are published. Unsubscribe anytime.</p>
+<div class="kit-embed">
+<!-- KIT_FORM_EMBED -->
+<script async="" data-uid="6bee764071" src="https://the-ai-native-mind.kit.com/6bee764071/index.js"></script>
+</div>
+</section>
+
+</section>
+
+ ]]></description>
+  <category>agentic-sdlc</category>
+  <category>supply-chain</category>
+  <guid>https://theainativemind.com/blog/agent-contracts-and-receipts/</guid>
+  <pubDate>Wed, 04 Nov 2026 05:00:00 GMT</pubDate>
+  <media:content url="https://theainativemind.com/blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+</channel>
+</rss>

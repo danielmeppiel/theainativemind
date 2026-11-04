@@ -1,0 +1,55 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - CNAME
+    - .nojekyll
+    - assets/fonts/*
+    - assets/img/*
+
+website:
+  title: "The AI-Native Mind"
+  description: "Daniel Meppiel writes and builds in the open about the agentic software development lifecycle."
+  site-url: https://theainativemind.com
+  image: /blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png
+  favicon: assets/img/favicon.svg
+  open-graph:
+    locale: en_US
+    site-name: "The AI-Native Mind"
+  twitter-card:
+    card-style: summary_large_image
+  page-navigation: false
+  back-to-top-navigation: false
+  bread-crumbs: false
+  navbar:
+    title: "The AI-Native Mind"
+    background: light
+    collapse-below: sm
+    right:
+      - text: "Blog"
+        href: blog/index.qmd
+      - text: "Handbook"
+        href: "https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind"
+      - text: "Subscribe"
+        href: "index.qmd#subscribe"
+  page-footer:
+    left: "© 2026 Daniel Meppiel"
+    right:
+      - text: "GitHub"
+        href: https://github.com/danielmeppiel
+      - text: "LinkedIn"
+        href: https://www.linkedin.com/in/danielmeppiel/
+      - text: "RSS"
+        href: blog/index.xml
+
+format:
+  html:
+    theme: [default, assets/theme.scss]
+    css: assets/fonts.css
+    toc: false
+    anchor-sections: false
+    smooth-scroll: false
+    code-copy: true
+    highlight-style: github
+    lang: en
+    html-math-method: plain

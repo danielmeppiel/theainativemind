@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/agent-contracts-and-receipts/index.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/blog/agent-contracts-and-receipts/index.html"
+    ]
+  }
+]
