@@ -11,6 +11,6 @@ listing:
   sort-ui: false
   filter-ui: false
   feed:
-    title: "The AI-Native Mind"
+    title: "The AI Native Mind"
     items: 20
 ---

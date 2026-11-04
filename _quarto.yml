@@ -8,21 +8,22 @@ project:
     - assets/img/*
 
 website:
-  title: "The AI-Native Mind"
+  title: "The AI Native Mind"
   description: "Daniel Meppiel writes and builds in the open about the agentic software development lifecycle."
   site-url: https://theainativemind.com
+  google-analytics: "G-7FCHZL83JW"
   image: /blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png
   favicon: assets/img/favicon.svg
   open-graph:
     locale: en_US
-    site-name: "The AI-Native Mind"
+    site-name: "The AI Native Mind"
   twitter-card:
     card-style: summary_large_image
   page-navigation: false
   back-to-top-navigation: false
   bread-crumbs: false
   navbar:
-    title: "The AI-Native Mind"
+    title: "The AI Native Mind"
     background: light
     collapse-below: sm
     right:

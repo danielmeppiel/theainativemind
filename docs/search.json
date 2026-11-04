@@ -7,30 +7,30 @@
     "text": "Agent Contracts and Receipts: toward verifiable agentic software factories\n\n\nTrust in agent-built software can’t come from the model, or from reading its output. A proposal for versioned Agent Contracts, standard receipts and one gate at merge, built on the supply-chain standards software already runs on. Draft for discussion.\n\n\n\n\n\nNovember 4, 2026\n\n21 min\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "index.html#about-the-ai-native-mind",
-    "href": "index.html#about-the-ai-native-mind",
-    "title": "The AI-Native Mind",
-    "section": "About The AI-Native Mind",
-    "text": "About The AI-Native Mind\nI believe we are in the early chapters of a fundamental shift in how software gets built: not only faster code generation, but a rethinking of how engineering organizations operate when every developer works alongside AI agents.\nI have spent 14+ years on this trajectory: distributed systems at CERN, developer tools at GitHub and Sonar, and founding an AI startup as CTO (WeGaw, backed by the European Space Agency). Today I am a Director at Microsoft, leading GTM for the Agentic SDLC.\nI created APM, Microsoft’s open-source Agent Package Manager, now supported by GitHub’s Dependabot and by Renovate. I designed the PROSE specification for writing agent instructions that hold up. I wrote The Agentic SDLC Handbook, everything I have learned about making AI-native development work at scale. And I build APMX, an independent, experimental runner for verifiable agentic software factories."
+    "objectID": "index.html#daniel-meppiel",
+    "href": "index.html#daniel-meppiel",
+    "title": "The AI Native Mind",
+    "section": "Daniel Meppiel",
+    "text": "Daniel Meppiel\nDirector, Agentic SDLC GTM at Microsoft. Author of The Agentic SDLC Handbook.\nI believe we are in the early chapters of a fundamental shift in how software gets built: not only faster code generation, but a rethinking of how engineering organizations operate when every developer works alongside AI agents.\nI have spent 14+ years on this trajectory: distributed systems at CERN, developer tools at GitHub and Sonar, and founding an AI startup as CTO (WeGaw, backed by the European Space Agency). Today I am a Director at Microsoft, leading GTM for the Agentic SDLC.\nI created APM, Microsoft’s open-source Agent Package Manager, now supported by GitHub’s Dependabot and by Renovate. I designed the PROSE specification for writing agent instructions that hold up. I wrote The Agentic SDLC Handbook, everything I have learned about making AI-native development work at scale. And I build APMX, an independent, experimental runner for verifiable agentic software factories."
   },
   {
     "objectID": "index.html#what-you-will-find-in-the-handbook",
     "href": "index.html#what-you-will-find-in-the-handbook",
-    "title": "The AI-Native Mind",
+    "title": "The AI Native Mind",
     "section": "What you will find in the handbook",
     "text": "What you will find in the handbook\n\n\nWhy AI-native development is more than adopting a coding agent. Copilot, Claude or Cursor change how one developer works. What engineering organizations need to change is bigger.\nThe governance gap. How productivity gains disappear when AI-generated code reaches review, compliance and architecture standards.\nAgent onboarding. Patterns that treat coding agents like new hires, with context, standards and guardrails built in.\nThe PROSE specification. A framework for writing agent instructions that are precise, composable and version-controlled.\nA two-command implementation pattern. apm install, then apm compile.\nThe full method. From one developer’s setup to agent governance across an enterprise.\n\n\n\nGet the free handbook Read it online →"
   },
   {
     "objectID": "index.html#writing",
     "href": "index.html#writing",
-    "title": "The AI-Native Mind",
+    "title": "The AI Native Mind",
     "section": "Writing",
     "text": "Writing\n\n\n\n\n\nAgent Contracts and Receipts: toward verifiable agentic software factories\n\n\nTrust in agent-built software can’t come from the model, or from reading its output. A proposal for versioned Agent Contracts, standard receipts and one gate at merge, built on the supply-chain standards software already runs on. Draft for discussion.\n\n\n\n\n\nNovember 4, 2026\n\n\n\n\n\nNo matching items\n\nAll essays · RSS"
   },
   {
     "objectID": "index.html#projects",
     "href": "index.html#projects",
-    "title": "The AI-Native Mind",
+    "title": "The AI Native Mind",
     "section": "Projects",
     "text": "Projects\n\n\nAPM. Microsoft’s open-source Agent Package Manager: declares the skills, prompts and plugins your coding agents use as dependencies, pins them, and governs them with one org-wide policy.\nAPMX. An independent, experimental open-source runner for agentic software factories: runs Agent Contracts on your coding agent, writes the receipt and provides the gate at merge.\nGenesis. An architectural layer for designing multi-agent, multi-skill systems with named patterns and contracts, before you write them. It applies the handbook’s architecture patterns to skill design; Appendix B walks through an example.\nAgent Contracts & Receipts. Format draft 0.1, open for comment: read the spec, join the discussions."
   },

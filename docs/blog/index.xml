@@ -5,13 +5,13 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>The AI-Native Mind</title>
+<title>The AI Native Mind</title>
 <link>https://theainativemind.com/blog/</link>
 <atom:link href="https://theainativemind.com/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Essays by Daniel Meppiel on the agentic software development lifecycle.</description>
 <image>
 <url>https://theainativemind.com/blog/agent-contracts-and-receipts/img/intent-in-evidence-out.png</url>
-<title>The AI-Native Mind</title>
+<title>The AI Native Mind</title>
 <link>https://theainativemind.com/blog/</link>
 </image>
 <generator>quarto-1.9.36</generator>

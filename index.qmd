@@ -42,7 +42,7 @@ An actionable framework for leaders and practitioners changing how software gets
 
 {{< include _kit-form.html >}}
 
-[You will receive the handbook right away, followed by a short welcome series and The AI-Native Mind newsletter (about twice a month). Unsubscribe anytime with one click.]{.fine}
+[You will receive the handbook right away, followed by a short welcome series and The AI Native Mind newsletter (about twice a month). Unsubscribe anytime with one click.]{.fine}
 :::
 
 [[Or read it online for free →](https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind)]{.read-online}
@@ -66,11 +66,7 @@ An actionable framework for leaders and practitioners changing how software gets
 </picture>
 ```
 
-[Daniel Meppiel]{.about-name}
-
 ::: {.about-creds}
-Director, Agentic SDLC GTM · Microsoft<br>
-Author, The Agentic SDLC Handbook<br>
 Creator of APM and APMX<br>
 Previously GitHub · Sonar · CERN
 :::
@@ -79,7 +75,9 @@ Previously GitHub · Sonar · CERN
 :::
 
 ::: {.about-text}
-## About The AI-Native Mind
+## Daniel Meppiel
+
+[Director, Agentic SDLC GTM at Microsoft. Author of The Agentic SDLC Handbook.]{.about-role}
 
 I believe we are in the early chapters of a fundamental shift in how software gets built: not only faster code generation, but a rethinking of how engineering organizations operate when every developer works alongside AI agents.
 
