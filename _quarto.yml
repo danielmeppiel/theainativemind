@@ -6,6 +6,8 @@ project:
     - .nojekyll
     - assets/fonts/*
     - assets/img/*
+    - aidevcon/index.html
+    - blog/agent-contracts-and-receipts/*.pdf
 
 website:
   title: "The AI Native Mind"

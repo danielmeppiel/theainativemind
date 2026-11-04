@@ -563,3 +563,14 @@ h1.display {
   text-decoration: none;
 }
 .quarto-post .listing-title a:hover { text-decoration: underline; }
+
+/* talk page boxes around the essay */
+.talk-box { border-left: 0; border: 1px solid rgba(0,0,0,.12); border-radius: 10px; padding: 0.9rem 1.1rem; margin: 0 0 2rem; font-size: 0.98rem; background: rgba(0,0,0,.025); }
+.talk-box p { margin: 0; }
+.cta-box { border: 1px solid rgba(0,0,0,.14); border-radius: 12px; padding: 1.4rem 1.5rem 1.2rem; margin: 3rem 0 1.5rem; }
+.cta-box h2 { margin-top: 0; font-size: 1.5rem; }
+.cta-box .btn-cta, .cta-box .btn-cta-secondary { display: inline-block; padding: .62rem 1.05rem; border-radius: 8px; margin: .2rem .5rem .6rem 0; font-weight: 600; text-decoration: none; }
+.cta-box .btn-cta { background: #1f2328; color: #fff; }
+.cta-box .btn-cta-secondary { border: 1px solid #1f2328; color: #1f2328; }
+.talk-box > :last-child, .cta-box > :last-child { margin-bottom: 0; }
+.cta-box h2 { margin-top: 0 !important; }

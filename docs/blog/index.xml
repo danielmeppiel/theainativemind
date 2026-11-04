@@ -25,6 +25,10 @@
 
 
 
+<div class="talk-box">
+<p><strong>From the aiDevCon NYC talk, November 2026:</strong> <em>Version your factory, not just your code.</em><br>
+<a href="version-your-factory-aidevcon-nyc-2026.pdf">Download the slides (PDF)</a> · <a href="https://github.com/danielmeppiel/agent-contracts">Read format draft 0.1 on GitHub</a></p>
+</div>
 <p>Someone at a bank writes one sentence: <em>hold outgoing wires of $10,000 or more to a new payee for a second approval.</em> Minutes later, an agentic software factory has done the work, and <a href="https://github.com/danielmeppiel/contoso-payments/pull/1">a pull request</a> is waiting against the bank’s core payments system. Three files: the wire logic, a new test module, the documentation. A hundred and seventy-five lines added, nine removed. One required check, and it is green.</p>
 <p>The bank is fictional. The code, the CI and that pull request are real.</p>
 <p>Would you merge it without reading it?</p>
@@ -460,6 +464,13 @@ font-style: inherit;">"dead..."</span></span></code></pre></div></div>
 <p>You can check my claims against code rather than prose. I built two open-source projects that implement what this essay describes. <a href="https://github.com/microsoft/apm">APM</a>, Microsoft’s open-source Agent Package Manager, installs the factory: it pins each skill and package to a commit and content hash, and governs them with one org-wide policy. <a href="https://github.com/danielmeppiel/apmx">APMX</a>, one open-source implementation of the format, independent and experimental, runs the factory on your coding agent, writes the receipt and provides the gate. <code>apmx --from 'danielmeppiel/apmx-demo-factory#v2.0.0' --plan</code> shows the bank’s factory, its contracts and checks, without calling a model. Neither project is required by the format; a better runner or gate from someone else would mean the format is working. If you want to try it in your organization, start small: one repository, one factory, the gate running as a check that is not yet required, then make it required.</p>
 <p>Go back to the pull request at the bank. Three files, one sentence of intent, one green check. With a receipt behind it, “would you merge it without reading it?” turns into three questions about your own system: did you approve this factory, do you trust its signer, and are the checks you wrote good enough to stand behind? We already answer those for every dependency we ship.</p>
 <p>A factory is a program, so treat it like one. Version your factory, not just your code.</p>
+</section>
+<section id="help-shape-the-format" class="level2 unnumbered unlisted cta-box">
+<h2 class="unnumbered unlisted" data-anchor-id="help-shape-the-format">Help shape the format</h2>
+<p>Agent Contracts &amp; Receipts is draft 0.1: an invitation, not a standard. Read it, break it, tell us what’s missing.</p>
+<p><a href="https://github.com/danielmeppiel/agent-contracts" class="btn-cta">Read format draft 0.1 on GitHub</a> <a href="https://github.com/danielmeppiel/agent-contracts/discussions" class="btn-cta-secondary">Join the discussion</a></p>
+<p><a href="version-your-factory-aidevcon-nyc-2026.pdf">Download the talk slides (PDF)</a></p>
+</section>
 
 
 <section class="subscribe" id="subscribe" aria-labelledby="subscribe-title">
@@ -469,8 +480,6 @@ font-style: inherit;">"dead..."</span></span></code></pre></div></div>
 <!-- KIT_FORM_EMBED -->
 <script async="" data-uid="6bee764071" src="https://the-ai-native-mind.kit.com/6bee764071/index.js"></script>
 </div>
-</section>
-
 </section>
 
  ]]></description>
