@@ -42,7 +42,7 @@ An actionable framework for leaders and practitioners changing how software gets
 
 {{< include _kit-form.html >}}
 
-[You will receive the handbook right away, followed by a short welcome series and The AI Native Mind newsletter (about twice a month). Unsubscribe anytime with one click.]{.fine}
+[You will receive the handbook right away, followed by a short welcome series and The AI Native Mind newsletter (at most once a month). Unsubscribe anytime with one click.]{.fine}
 :::
 
 [[Or read it online for free →](https://danielmeppiel.github.io/agentic-sdlc-handbook/?utm_source=theainativemind)]{.read-online}
